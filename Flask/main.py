@@ -1,5 +1,6 @@
-from settings.flask_app import create_app
+def main():
+    return 0
 
 
 if __name__ == '__main__':
-    app = create_app()
+    main()
