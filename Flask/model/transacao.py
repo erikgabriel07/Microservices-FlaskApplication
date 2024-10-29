@@ -1,13 +1,28 @@
 from database.sessao import db
 
 
-class Transacao(db.Model):
-    __tablename__ = 'transacao'
+class base_incidencia(db.Model):
+    __tablename__ = 'base_de_incidencia'
+
     id = db.Column(db.Integer, primary_key=True)
-    conta = db.Column(db.String(20), nullable=False)
-    agencia = db.Column(db.String(10), nullable=False)
-    texto = db.Column(db.String(), nullable=True)
-    valor = db.Column(db.Float(), nullable=False)
-    is_deleted = db.Column(db.Boolean,nullable=False, default=False)
+    ano_calendario = db.Column(db.Integer, nullable=False)
+    receita_tributaria = db.Column(db.String(10), nullable=False)
+    descricao = db.Column(db.String(), nullable=True)
+    valor_receita_tributaria = db.Column(db.Numeric(15,2), nullable=False)
+    percentual_pib = db.Column(db.Numeric(3,2), nullable=False)
+    is_deleted = db.Column(db.Boolean, default=False)
     is_duplicated = db.Column(db.Boolean, default=False)
-    
+
+
+class tributo_competencia(db.Model):
+    __tablename__ = 'tributo_e_competencia'
+
+    id = db.Column(db.Integer, primary_key=True)
+    ano_calendario = db.Column(db.Integer, nullable=False)
+    competencia = db.Column(db.String(180), nullable=False)
+    orcamento = db.Column(db.String(180), nullable=False)
+    descricao = db.Column(db.String(180), nullable=False)
+    valor_receita_tributaria = db.Column(db.Numeric(15,2), nullable=False)
+    percentual_pib = db.Column(db.Numeric(3,2), nullable=False)
+    is_deleted = db.Column(db.Boolean, default=False)
+    is_duplicated = db.Column(db.Boolean, default=False)
