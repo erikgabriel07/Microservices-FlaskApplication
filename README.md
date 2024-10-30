@@ -57,12 +57,12 @@ a aplicação Flask estará disponível em `http://localhost:5000`.
 
 ## Rotas da API
 ### FastAPI
-- **POST /enviar_dados**: Envia um arquivo CSV para ser processado.
-- **GET /dados**: Obtém os dados armazenados no banco de dados.
+- **POST**: Envia um arquivo CSV para ser processado.
+- **GET**: Obtém os dados armazenados no banco de dados.
 
 ### Flask
-- **POST /criar_arquivo**: Cria um novo arquivo de dados.
-- **DELETE /deletar_dados**: Remove dados do banco de dados.
+- **POST**: Cria um novo arquivo de dados.
+- **PATCH**: Define dados do banco de dados como excluído ou duplicado.
 
 ## Colaboradores
 
