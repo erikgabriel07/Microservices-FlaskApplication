@@ -9,7 +9,7 @@ def register_routes(app: Flask):
         data = request.get_json()
 
         if data.get('bi'):
-            transacoes = base_incidencia.query.all()
+            transacoes = base_incidencia.query.filter_by(is_deleted=False)
 
             resultados = [
                 {
@@ -20,11 +20,11 @@ def register_routes(app: Flask):
                     'valor_receita_tributaria': transacao.valor_receita_tributaria,
                     'percentual_pib': transacao.percentual_pib,
                     'is_duplicated': transacao.is_duplicated
-                } for transacao in transacoes if not transacao.is_deleted
+                } for transacao in transacoes
             ]
             
         elif data.get('tc'):
-            transacoes = tributo_competencia.query.all()
+            transacoes = tributo_competencia.query.filter_by(is_deleted=False)
 
             resultados = [
                 {
@@ -37,7 +37,7 @@ def register_routes(app: Flask):
                     'percentual_pib': transacao.percentual_pib,
                     'is_duplicated': transacao.is_duplicated
                     
-                } for transacao in transacoes if not transacao.is_deleted
+                } for transacao in transacoes
             ]
 
         return jsonify({'data': resultados}), 200
