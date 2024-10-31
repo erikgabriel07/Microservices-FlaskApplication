@@ -7,7 +7,7 @@ class base_incidencia(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     ano_calendario = db.Column(db.Integer, nullable=False)
     receita_tributaria = db.Column(db.Integer, nullable=False)
-    descricao = db.Column(db.String(), nullable=True)
+    descricao = db.Column(db.String(180), nullable=True)
     valor_receita_tributaria = db.Column(db.Numeric(15,2), nullable=False)
     percentual_pib = db.Column(db.Numeric(3,2), nullable=False)
     is_deleted = db.Column(db.Boolean, default=False)
