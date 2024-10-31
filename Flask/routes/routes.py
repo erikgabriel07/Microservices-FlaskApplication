@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from settings.route_parameters.py import verify_id_parameter
 from model.transacao import base_incidencia, tributo_competencia
 from database.sessao import db
 
@@ -90,3 +91,8 @@ def register_routes(app: Flask):
         except Exception as e:
             return jsonify({'mensagem': 'Erro ao cadastrar transação!',
                             'error': e}), 400
+
+    @app.route('/file/delete/?id=<int:id>', methods=['PATCH'})
+    @verify_id_parameter
+    def delete(id):
+        return jsonify({'message': 'Deleted successfully!'}), 200
