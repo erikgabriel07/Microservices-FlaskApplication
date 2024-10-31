@@ -92,7 +92,7 @@ def register_routes(app: Flask):
             return jsonify({'mensagem': 'Erro ao cadastrar transação!',
                             'error': e}), 400
 
-    @app.route('/file/delete/?id=<int:id>', methods=['PATCH'})
+    @app.route('/file/delete/?id=<int:id>', methods=['PATCH'])
     @verify_id_parameter
     def delete(id):
         return jsonify({'message': 'Deleted successfully!'}), 200
