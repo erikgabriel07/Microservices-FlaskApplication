@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify
-from settings.route_parameters.py import verify_id_parameter
+from settings.route_parameters import verify_id_parameter
 from model.transacao import base_incidencia, tributo_competencia
 from database.sessao import db
 
