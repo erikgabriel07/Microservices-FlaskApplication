@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from settings.logger import Logger
-from model.transacao import base_incidencia, tributo_competencia
+from model.transacao import BaseIncidencia, TributoCompetencia
 from database.sessao import db
 
 
@@ -12,7 +12,7 @@ def register_routes(app: Flask, logger: Logger, token_authenticator):
         data = request.get_json()
 
         if data.get('bi'):
-            transacoes = base_incidencia.query.filter_by(is_deleted=False)
+            transacoes = BaseIncidencia.query.filter_by(is_deleted=False)
 
             resultados = [
                 {
@@ -27,7 +27,7 @@ def register_routes(app: Flask, logger: Logger, token_authenticator):
             ]
             
         elif data.get('tc'):
-            transacoes = tributo_competencia.query.filter_by(is_deleted=False)
+            transacoes = TributoCompetencia.query.filter_by(is_deleted=False)
 
             resultados = [
                 {
@@ -53,7 +53,7 @@ def register_routes(app: Flask, logger: Logger, token_authenticator):
             data = request.get_json()
 
             for data in data:
-                transacao = base_incidencia(
+                transacao = BaseIncidencia(
                     ano_calendario=data.get('Ano_calendario'),
                     receita_tributaria=data.get('Codigo_da_Receita_Tributaria'),
                     descricao=data.get('Descricao'),
@@ -79,7 +79,7 @@ def register_routes(app: Flask, logger: Logger, token_authenticator):
             data = request.get_json()
 
             for data in data:
-                transacao = tributo_competencia(
+                transacao = TributoCompetencia(
                     ano_calendario=data.get('Ano_calendario'),
                     competencia=data.get('Competencia'),
                     orcamento=data.get('Orcamento'),

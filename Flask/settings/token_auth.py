@@ -1,13 +1,11 @@
-import jwt
 from functools import wraps
 from settings.jwt_manager import JWTManager
-from settings.config import Config
 from flask import request, jsonify
 
 
 class TokenAuthenticator:
-    def __init__(self) -> None:
-        self.secret_key = Config.SECRET_KEY
+    def __init__(self, secret_key) -> None:
+        self.secret_key = secret_key
 
     def validate_token(self, f):
         @wraps(f)
@@ -20,7 +18,7 @@ class TokenAuthenticator:
                 return jsonify({'mensagem': 'Token ausente!'}), 403
             
             try:
-                user_id = JWTManager(self.secret_key).verify_jwt_token(token)
+                user_id = JWTManager(self.secret_key).decode_jwt_token(token)
                 if not user_id:
                     return jsonify({'mensagem': 'Token inválido!'}), 403
             except:

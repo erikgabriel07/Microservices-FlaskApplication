@@ -1,7 +1,8 @@
+from werkzeug.security import generate_password_hash, check_password_hash
 from database.sessao import db
 
 
-class base_incidencia(db.Model):
+class BaseIncidencia(db.Model):
     __tablename__ = 'base_de_incidencia'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -14,7 +15,7 @@ class base_incidencia(db.Model):
     is_duplicated = db.Column(db.Boolean, default=False)
 
 
-class tributo_competencia(db.Model):
+class TributoCompetencia(db.Model):
     __tablename__ = 'tributo_e_competencia'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -26,3 +27,19 @@ class tributo_competencia(db.Model):
     percentual_pib = db.Column(db.Numeric(3,2), nullable=False)
     is_deleted = db.Column(db.Boolean, default=False)
     is_duplicated = db.Column(db.Boolean, default=False)
+
+
+# Tabela usada apenas para testes de geração de token utilizando dados
+# preexistentes no banco
+class User(db.Model): 
+    __tablename__ = 'users'
+
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), unique=True, nullable=False)
+    senha_hash = db.Column(db.String(255), nullable=False)
+
+    def definir_senha(self, senha):
+        self.senha_hash = generate_password_hash(senha)
+
+    def checar_senha(self, senha):
+        return check_password_hash(self.senha_hash, senha)
