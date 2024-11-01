@@ -1,12 +1,14 @@
 from flask import Flask, request, jsonify
-from settings.route_parameters import verify_id_parameter
+from settings.logger import Logger
 from model.transacao import base_incidencia, tributo_competencia
 from database.sessao import db
 
 
-def register_routes(app: Flask):
+def register_routes(app: Flask, logger: Logger, token_authenticator):
     @app.route('/file/list-data', methods=['GET'])
-    def list_file_data():
+    @logger.api_logging_handler
+    @token_authenticator.validate_token
+    def list_file_data(user_id=None):
         data = request.get_json()
 
         if data.get('bi'):
@@ -44,7 +46,9 @@ def register_routes(app: Flask):
         return jsonify({'data': resultados}), 200
 
     @app.route('/upload-file/base-incidencia', methods=['POST'])
-    def base_incidencia_upload():
+    @logger.api_logging_handler
+    @token_authenticator.validate_token
+    def base_incidencia_upload(user_id=None):
         try:
             data = request.get_json()
 
@@ -68,7 +72,9 @@ def register_routes(app: Flask):
                             'error': e}), 400
 
     @app.route('/upload-file/tributo-competencia', methods=['POST'])
-    def tributo_competencia_upload():
+    @logger.api_logging_handler
+    @token_authenticator.validate_token
+    def tributo_competencia_upload(user_id=None):
         try:
             data = request.get_json()
 
@@ -93,6 +99,7 @@ def register_routes(app: Flask):
                             'error': e}), 400
 
     @app.route('/file/delete/?id=<int:id>', methods=['PATCH'])
-    @verify_id_parameter
-    def delete(id):
+    @logger.api_logging_handler
+    @token_authenticator.validate_token
+    def delete(id, user_id=None):
         return jsonify({'message': 'Deleted successfully!'}), 200
