@@ -1,4 +1,3 @@
-from werkzeug.security import generate_password_hash, check_password_hash
 from database.sessao import db
 
 
@@ -37,9 +36,4 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(100), unique=True, nullable=False)
     senha_hash = db.Column(db.String(255), nullable=False)
-
-    def definir_senha(self, senha):
-        self.senha_hash = generate_password_hash(senha)
-
-    def checar_senha(self, senha):
-        return check_password_hash(self.senha_hash, senha)
+    

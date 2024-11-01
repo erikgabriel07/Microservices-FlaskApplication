@@ -1,16 +1,19 @@
 from flask import Flask
+from flask_cors import CORS
 from settings.config import Config
 from settings.logger import Logger
 from settings.token_auth import TokenAuthenticator
 from database.sessao import db
 from routes.routes import register_routes
+from routes.login import register_login_route
 from model.transacao import User
+from werkzeug.security import generate_password_hash
 
 
-def create_default_user():
+def create_default_user(): # Cria um usuário padrão
     transacao = User(
         nome='flask',
-        senha=User().definir_senha('flask123')
+        senha_hash=generate_password_hash('flask123')
     )
     try:
         db.session.add(transacao)
@@ -24,6 +27,7 @@ def create_default_user():
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
+    CORS(app,  resources=r'/*', origins=['http://localhost:8000'])
 
     db.init_app(app)
 
@@ -35,5 +39,6 @@ def create_app():
         create_default_user() # Cria um usuário padrão para testes
 
     register_routes(app, logger, token_authenticator)
+    register_login_route(app, logger)
 
     return app

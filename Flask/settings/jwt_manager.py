@@ -7,7 +7,7 @@ class JWTManager:
         self.secret_key = secret_key
         self.expiration_hours = expiration_hours
 
-    def generate_jwt_token(self, user_id='flask'):
+    def generate_jwt_token(self, user_id):
         payload = {
             'sub': user_id,
             'iat': datetime.utcnow(),
