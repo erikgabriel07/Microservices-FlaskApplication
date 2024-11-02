@@ -13,7 +13,7 @@ def register_login_route(app: Flask, logger: Logger):
         jwt_manager = JWTManager(app.config['SECRET_KEY'])
 
 
-        usuario = User.query.filter_by(nome=data['user']).first()
+        usuario = User.query.filter_by(nome=data.get('user')).first()
 
         if not usuario or not check_password_hash(usuario.senha_hash, data['pwd']):
             return jsonify(
