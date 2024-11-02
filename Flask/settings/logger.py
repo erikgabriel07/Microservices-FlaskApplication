@@ -28,10 +28,9 @@ class Logger(logging.Logger):
         def decorator(*args, **kwargs):
             message = f'{request.remote_addr} - /{request.method} {request.full_path}'
 
-            user_id = kwargs.get('user_id')
-            user_id = user_id if user_id else 'token ausente'
+            context = f'{request.user_agent}'
             
-            self.context_log(logging.INFO, message, user_id)
+            self.context_log(logging.INFO, message, context)
 
             return f(*args, *kwargs)
         
