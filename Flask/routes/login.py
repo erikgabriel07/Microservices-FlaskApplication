@@ -10,6 +10,11 @@ def register_login_route(app: Flask, logger: Logger):
     @logger.api_logging_handler
     def login():
         data = request.get_json()
+        jwt_manager = JWTManager(app.config['SECRET_KEY'])
+
+        if data.get('token'):
+            if jwt_manager.decode_jwt_token(data.get('token')):
+                return jsonify({'mensagem': 'Cliente ainda possui um token válido!'), 409
 
         usuario = User.query.filter_by(nome=data['user']).first()
 
@@ -17,6 +22,6 @@ def register_login_route(app: Flask, logger: Logger):
             return jsonify(
                 {'auth_status': 'deauthorized', 'mensagem': 'Credenciais inválidas!'}), 406
         
-        access_token = JWTManager(app.config['SECRET_KEY']).generate_jwt_token(usuario.nome)
+        access_token = jwt_manager.generate_jwt_token(usuario.nome)
 
         return jsonify({'auth_status': 'authorized', 'access_token': access_token}), 200
