@@ -1,8 +1,8 @@
 from flask import Flask
 from flask_cors import CORS
+from settings.jwt_manager import jwt_manager
 from settings.config import Config
 from settings.logger import Logger
-from settings.token_auth import TokenAuthenticator
 from database.sessao import db
 from routes.routes import register_routes
 from routes.login import register_login_route
@@ -30,15 +30,15 @@ def create_app():
     CORS(app,  resources=r'/*', origins=['http://localhost:8000'])
 
     db.init_app(app)
+    jwt_manager.init_app(app)
 
     logger = Logger('flask-logger')
-    token_authenticator = TokenAuthenticator(app.config['SECRET_KEY'])
 
     with app.app_context():
         db.create_all() # Criar todas as tabelas
         create_default_user() # Cria um usuário padrão para testes
 
-    register_routes(app, logger, token_authenticator)
+    register_routes(app, logger)
     register_login_route(app, logger)
 
     return app

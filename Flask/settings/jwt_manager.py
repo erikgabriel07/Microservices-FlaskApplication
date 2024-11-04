@@ -1,26 +1,20 @@
-import jwt
-from datetime import datetime, timedelta
+from flask import jsonify
+from flask_jwt_extended import JWTManager
 
 
-class JWTManager:
-    def __init__(self, secret_key, expiration_hours=1) -> None:
-        self.secret_key = secret_key
-        self.expiration_hours = expiration_hours
+jwt_manager = JWTManager()
 
-    def generate_jwt_token(self, user_id):
-        payload = {
-            'sub': user_id,
-            'iat': datetime.utcnow(),
-            'exp': datetime.utcnow() + timedelta(hours=self.expiration_hours)
-        }
-        token = jwt.encode(payload, self.secret_key, algorithm='HS256')
-        return token
 
-    def decode_jwt_token(self, token):
-        try:
-            payload = jwt.decode(token, self.secret_key, algorithms=['HS256'])
-            return payload
-        except jwt.ExpiredSignatureError:
-            return None
-        except jwt.InvalidTokenError:
-            return None
+@jwt_manager.invalid_token_loader
+def invalid_token_callback(error):
+    return jsonify({'mensagem': 'O token fornecido é inválido!'}), 401
+
+
+@jwt_manager.expired_token_loader
+def expired_token_callback(header, payload):
+    return jsonify({'mensagem': 'O token fornecido expirou!'}), 401
+
+
+@jwt_manager.unauthorized_loader
+def missing_token_callback(error):
+     return jsonify({'mensagem': 'Nenhum token de acesso foi fornecido!'}), 401
