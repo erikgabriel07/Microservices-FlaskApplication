@@ -1,6 +1,6 @@
 services:
-  flask_service:
-    container_name: "Flask"
+  app:
+    container_name: Flask
     build:
       context: .
       dockerfile: Dockerfile
@@ -9,4 +9,4 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - ENV=development
+      - FLASK_ENV: development
