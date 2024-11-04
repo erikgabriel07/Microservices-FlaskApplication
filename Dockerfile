@@ -1,14 +1,20 @@
-FROM python:3.12
+# Imagem oficial do python como base
+FROM python:3.12-slim
 
-WORKDIR /flask-aplication
+# Diretório de trabalho dentro do container
+WORKDIR /flask-application
 
+# Copiando arquivo de requisitos para o diretório de trabalho
 COPY ./requirements.txt .
 
-RUN apt-get update && apt-get upgrade
-RUN pip install -r requirements.txt
+# Instação de dependências
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Copiando código da aplicação para o diretório de trabalho
 COPY . .
 
+# Expondo serviço na porta 8000
 EXPOSE 5000
 
-CMD ["python", 'Flask/main.py']
+# Executando aplicação
+CMD ["python", "main.py"]
