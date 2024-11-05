@@ -3,6 +3,7 @@ from flask_cors import CORS
 from settings.jwt_manager import jwt_manager
 from settings.config import Config
 from settings.logger import Logger
+from services.thread_processing import ThreadProcessing
 from database.sessao import db
 from routes.routes import register_routes
 from routes.login import register_login_route
@@ -33,12 +34,13 @@ def create_app():
     jwt_manager.init_app(app)
 
     logger = Logger('flask-logger')
+    thread_processor = ThreadProcessing(app)
 
     with app.app_context():
-        db.create_all() # Criar todas as tabelas
+        db.create_all() # Criar todas as tabelasz
         create_default_user() # Cria um usuário padrão para testes
 
-    register_routes(app, logger)
+    register_routes(app, logger, thread_processor)
     register_login_route(app, logger)
 
     return app

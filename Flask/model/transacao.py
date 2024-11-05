@@ -37,3 +37,10 @@ class User(db.Model):
     nome = db.Column(db.String(100), unique=True, nullable=False)
     senha_hash = db.Column(db.String(255), nullable=False)
     
+
+class TaskResult(db.Model):
+    __tablename__ = 'tasks_results'
+
+    task_id = db.Column(db.String(255), primary_key=True)
+    status = db.Column(db.String(15), nullable=False)
+    result = db.Column(db.Text, default=None)

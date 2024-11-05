@@ -6,6 +6,9 @@ class Config:
 
     SECRET_KEY = 'KwNTYbvqGdpviK9RCiPgmHLoD1tAHfqyoADwmLZI7mE'
 
+    CACHE_TYPE = 'SimpleCache'
+    CACHE_DEFAULT_TIMEOUT = timedelta(minutes=5)
+
     JWT_ALGORITHM = 'HS256'
     JWT_DECODE_ALGORITHM = ['HS256']
     JWT_ERROR_MESSAGE_KEY = 'mensagem'
