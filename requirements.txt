@@ -11,9 +11,7 @@ greenlet==3.1.1
 itsdangerous==2.2.0
 Jinja2==3.1.4
 MarkupSafe==3.0.2
-pip-autoremove==0.10.0
 pycparser==2.22
-PyJWT==2.9.0
 python-dotenv==1.0.1
 setuptools==75.3.0
 SQLAlchemy==2.0.36
