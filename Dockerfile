@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Executando aplicação
-CMD ["python", "main.py"]
+CMD ["python", "Flask/main.py"]
