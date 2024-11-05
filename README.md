@@ -66,7 +66,7 @@ a aplicação Flask estará disponível em `http://localhost:5000`.
 
 ## Subindo o docker
 Para criar o container da aplicação, execute: ```docker-compose up -d``` \
-O container estará servindo na porta `8000` para o FastAPI e `5000` para o Flask.
+O container estará servindo na porta `5000` para o Flask.
 
 ## Colaboradores
 
