@@ -13,6 +13,9 @@ class BaseIncidencia(db.Model):
     is_deleted = db.Column(db.Boolean, default=False)
     is_duplicated = db.Column(db.Boolean, default=False)
 
+    def to_dict(self):
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
+
 
 class TributoCompetencia(db.Model):
     __tablename__ = 'tributo_e_competencia'
@@ -26,6 +29,9 @@ class TributoCompetencia(db.Model):
     percentual_pib = db.Column(db.Numeric(3,2), nullable=False)
     is_deleted = db.Column(db.Boolean, default=False)
     is_duplicated = db.Column(db.Boolean, default=False)
+
+    def to_dict(self):
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
 
 
 # Tabela usada apenas para testes de geração de token utilizando dados

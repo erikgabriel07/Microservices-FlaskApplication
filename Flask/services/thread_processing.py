@@ -24,9 +24,10 @@ class ThreadProcessing:
                 return str(e)
 
             request_data = request.json
+            request_args = request.args
             def target(request_data, task_id):
                 with self.app.app_context():
-                    result = f(request_data=request_data, *args, **kwargs)
+                    result = f(request_data, request_args, *args, **kwargs)
 
                     task = TaskResult.query.filter_by(task_id=task_id).first()
                     task.status = 'processed'

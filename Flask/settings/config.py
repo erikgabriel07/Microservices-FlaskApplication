@@ -6,12 +6,9 @@ class Config:
 
     SECRET_KEY = 'KwNTYbvqGdpviK9RCiPgmHLoD1tAHfqyoADwmLZI7mE'
 
-    CACHE_TYPE = 'SimpleCache'
-    CACHE_DEFAULT_TIMEOUT = timedelta(minutes=5)
-
     JWT_ALGORITHM = 'HS256'
     JWT_DECODE_ALGORITHM = ['HS256']
     JWT_ERROR_MESSAGE_KEY = 'mensagem'
     JWT_COOKIE_SAMESITE = 'lax'
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=10)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=1)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=1)

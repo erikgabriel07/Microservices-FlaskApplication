@@ -9,12 +9,9 @@ import ast
 
 
 def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessing):
-    cache = Cache(app)
-
     @app.route('/task/status', methods=['GET'])
     @logger.api_logging_handler
     @jwt_required()
-    @cache.cached(timeout=180)
     def task_status():
         task_id = request.args.get('id')
 
@@ -33,40 +30,22 @@ def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessi
     @logger.api_logging_handler
     @jwt_required()
     @thread_processor.thread_processing
-    def list_file_data(request_data, user_id=None):
+    def list_file_data(request_data, request_args, user_id=None):
         data = request_data
+        page = int(request_args.get('page', 1))
+        per_page = int(request_args.get('per_page', 100))
 
         if data.get('bi'):
-            transacoes = BaseIncidencia.query.filter_by(is_deleted=False)
-
-            resultados = [
-                {
-                    'id': transacao.id,
-                    'ano_calendario': transacao.ano_calendario,
-                    'receita_tributaria': transacao.receita_tributaria,
-                    'descricao': transacao.descricao,
-                    'valor_receita_tributaria': transacao.valor_receita_tributaria,
-                    'percentual_pib': transacao.percentual_pib,
-                    'is_duplicated': transacao.is_duplicated
-                } for transacao in transacoes
-            ]
+            transacoes = BaseIncidencia.query.filter_by(is_deleted=False).paginate(
+                page=page, per_page=per_page, error_out=False
+            )
+            resultados = [transacao.to_dict() for transacao in transacoes]
             
         elif data.get('tc'):
-            transacoes = TributoCompetencia.query.filter_by(is_deleted=False)
-
-            resultados = [
-                {
-                    'id': transacao.id,
-                    'ano_calendario': transacao.ano_calendario,
-                    'competencia': transacao.competencia,
-                    'orcamento': transacao.orcamento,
-                    'descricao': transacao.descricao,
-                    'valor_receita_tributaria': transacao.valor_receita_tributaria,
-                    'percentual_pib': transacao.percentual_pib,
-                    'is_duplicated': transacao.is_duplicated
-                    
-                } for transacao in transacoes
-            ]
+            transacoes = TributoCompetencia.query.filter_by(is_deleted=False).paginate(
+                page=page, per_page=per_page, error_out=False
+            )
+            resultados = [transacao.to_dict() for transacao in transacoes]
 
         return jsonify({'data': resultados}), 200
 
@@ -74,7 +53,7 @@ def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessi
     @logger.api_logging_handler
     @jwt_required()
     @thread_processor.thread_processing
-    def base_incidencia_upload(request_data, user_id=None):
+    def base_incidencia_upload(request_data, request_args, user_id=None):
         try:
             data = request_data
 
@@ -101,7 +80,7 @@ def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessi
     @logger.api_logging_handler
     @jwt_required()
     @thread_processor.thread_processing
-    def tributo_competencia_upload(request_data, user_id=None):
+    def tributo_competencia_upload(request_data, request_args, user_id=None):
         try:
             data = request_data
 
