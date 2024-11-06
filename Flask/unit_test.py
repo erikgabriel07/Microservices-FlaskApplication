@@ -20,34 +20,26 @@ class FlaskTestClass(unittest.TestCase):
 
 
     def test_base_incidencia_duplicate_delete_route(self):
+        methods = ['duplicated', 'deleted']
         header = dict(Authorization=f'Bearer {self.token}')
-        response = self.client.patch(
-            '/base-incidencia?id=1&metodo=duplicated', headers=header)
-        data = response.get_json()
 
-        self.assertEqual(response.status_code, 200)
-        print(data)
+        for method in methods:
+            response = self.client.patch(
+                f'/base-incidencia?id=1&metodo={method}', headers=header)
+            data = response.get_json()
 
-        response = self.client.patch(
-            '/base-incidencia?id=1&metodo=deleted', headers=header)
-        data = response.get_json()
-
-        self.assertEqual(response.status_code, 200)
-        print(data)
+            self.assertEqual(response.status_code, 200)
+            print(data)
 
 
     def test_tributo_competencia_duplicate_delete_route(self):
+        methods = ['duplicated', 'deleted']
         header = dict(Authorization=f'Bearer {self.token}')
-        response = self.client.patch(
-            '/tributo-competencia?id=1&metodo=duplicated', headers=header)
-        data = response.get_json()
 
-        self.assertEqual(response.status_code, 200)
-        print(data)
+        for method in methods:
+            response = self.client.patch(
+                f'/tributo-competencia?id=1&metodo={method}', headers=header)
+            data = response.get_json()
 
-        response = self.client.patch(
-            '/tributo-competencia?id=1&metodo=deleted', headers=header)
-        data = response.get_json()
-
-        self.assertEqual(response.status_code, 200)
-        print(data)
+            self.assertEqual(response.status_code, 200)
+            print(data)
