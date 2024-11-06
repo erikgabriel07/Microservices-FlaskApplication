@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
 from flask_jwt_extended import jwt_required
-from flask_caching import Cache
 from settings.logger import Logger
 from model.transacao import BaseIncidencia, TributoCompetencia, TaskResult
 from database.sessao import db
@@ -73,6 +72,7 @@ def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessi
             
             return jsonify({'mensagem': 'Transação realizada com sucesso!'}), 200
         except Exception as e:
+            logger.context_log(40, 'Ocorreu um erro na rota! | userid: ', user_id)
             return jsonify({'mensagem': 'Erro ao cadastrar transação!',
                             'error': e}), 400
 
@@ -101,6 +101,7 @@ def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessi
             
             return jsonify({'mensagem': 'Transação realizada com sucesso!'}), 200
         except Exception as e:
+            logger.context_log(40, 'Ocorreu um erro na rota! | userid: ', user_id)
             return jsonify({'mensagem': 'Erro ao cadastrar transação!',
                             'error': e}), 400
 
@@ -113,6 +114,7 @@ def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessi
         data = BaseIncidencia.query.filter_by(id=id).first()
 
         if not data:
+            logger.context_log(40, '404 Not Found')
             return jsonify({'mensagem': 'Não encontrado'}), 404
         elif metodo == 'duplicated':   
             data.is_duplicated=True
@@ -137,6 +139,7 @@ def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessi
         data = TributoCompetencia.query.filter_by(id=id).first()
         
         if not data:
+            logger.context_log(40, '404 Not Found')
             return jsonify({'mensagem': 'Não encontrado'}), 404
         elif metodo == 'duplicated':   
             data.is_duplicated=True

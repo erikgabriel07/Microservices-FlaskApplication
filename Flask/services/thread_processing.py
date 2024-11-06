@@ -11,6 +11,13 @@ class ThreadProcessing:
         self.app = app
 
     def thread_processing(self, f):
+        """
+        Decorador para executar as operações de uma rota em segundo plano.
+        Útil para quando uma enorme quantidade de dados está sendo processado,
+        evitando bloquear o endpoint até a tarefa ser totalmente concluída.
+        :param f: A função a ser decorada
+        :return: A função decoradora
+        """
         @wraps(f)
         def decorator(*args, **kwargs):
             task_id = str(uuid.uuid4())
@@ -25,7 +32,7 @@ class ThreadProcessing:
 
             request_data = request.json
             request_args = request.args
-            def target(request_data, task_id):
+            def target():
                 with self.app.app_context():
                     result = f(request_data, request_args, *args, **kwargs)
 
@@ -37,7 +44,7 @@ class ThreadProcessing:
                         db.session.close()
 
 
-            thread = Thread(target=target, args=(request_data, task_id))
+            thread = Thread(target=target)
             thread.start()
 
             return jsonify({

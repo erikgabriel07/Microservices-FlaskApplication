@@ -17,7 +17,7 @@ def register_login_route(app: Flask, logger: Logger):
         data = request.get_json()
 
         try:
-            verify_jwt_in_request()
+            verify_jwt_in_request() # Verifica se foi passado um cabeçalho de autorização
 
             identity = get_jwt_identity()
             return jsonify({'mensagem': f'Usuário {identity} já está logado!'}), 409
