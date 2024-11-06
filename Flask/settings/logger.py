@@ -10,7 +10,7 @@ class Logger(logging.Logger):
         os.makedirs('logs', exist_ok=True)
 
         file_handler = logging.handlers.RotatingFileHandler(
-            filename=os.path.join('logs', 'app.log'),
+            filename=os.path.join('Flask', 'logs', 'app.log'),
             maxBytes=1000000,
             backupCount=3
         )

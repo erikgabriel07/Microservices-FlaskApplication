@@ -104,8 +104,36 @@ def register_routes(app: Flask, logger: Logger, thread_processor: ThreadProcessi
             return jsonify({'mensagem': 'Erro ao cadastrar transação!',
                             'error': e}), 400
 
-    @app.route('/file/delete/?id=<int:id>', methods=['PATCH'])
+    @app.route('/base-incidencia/', methods=['PATCH'])
     @logger.api_logging_handler
     @jwt_required()
-    def delete(id, user_id=None):
-        return jsonify({'message': 'Deleted successfully!'}), 200
+    def duplicatedORdeleted(user_id=None):
+        id = request.args.get('id')
+        metodo = request.args.get('metodo').lower()
+        data = BaseIncidencia.query.filter_by(id=id).first()
+        if not data:
+            return jsonify({'mensagem': 'Não encontrado'}), 404
+        elif metodo == 'duplicated':
+            data.is_duplicated=True
+            return jsonify({'mensagem': 'Atualizado com sucesso', 'id': id}), 
+        elif metodo == 'deleted':
+            data.is_deleted=True
+            return jsonify({'mensagem': 'Deletado com sucesso', 'id': id}), 200
+        return jsonify({'mensagem': f'Operação inválida {repr(metodo)}'}), 500
+
+    @app.route('/tributo-competencia/', methods=['PATCH'])
+    @logger.api_logging_handler
+    @jwt_required()
+    def duplicateORdelete(user_id=None):
+        id = request.args.get('id')
+        metodo = request.args.get('metodo').lower()
+        data = TributoCompetencia.query.filter_by(id=id).first()
+        if not data:
+            return jsonify({'mensagem': 'Não encontrado'}), 404
+        elif metodo == 'duplicated':   
+            data.is_duplicated=True
+            return jsonify({'mensagem': 'Atualizado com sucesso', 'id': id}), 
+        elif metodo == 'deleted':
+            data.is_deleted=True
+            return jsonify({'mensagem': 'Deletado com sucesso', 'id': id}), 200
+        return jsonify({'mensagem': f'Operação inválida {repr(metodo)}'}), 500

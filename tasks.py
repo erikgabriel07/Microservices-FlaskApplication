@@ -2,7 +2,7 @@ from invoke import task
 
 
 @task
-def install_requirements(c):
+def freeze_requirements(c):
     c.run('pip freeze > requirements.txt')
 
 
@@ -13,6 +13,6 @@ def commit(c):
     c.run('git push')
 
 
-@task(pre=[install_requirements])
+@task(pre=[freeze_requirements])
 def deploy(c):
     c.run('python Flask/main.py')
