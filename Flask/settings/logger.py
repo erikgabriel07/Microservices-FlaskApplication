@@ -7,7 +7,7 @@ from flask import request
 class Logger(logging.Logger):
     def __init__(self, name: str, level=logging.INFO) -> None:
         super().__init__(name, level)
-        os.makedirs('Flask', 'logs', exist_ok=True)
+        os.makedirs(os.path.join('Flask', 'logs'), exist_ok=True)
 
         file_handler = logging.handlers.RotatingFileHandler(
             filename=os.path.join('Flask', 'logs', 'app.log'),
