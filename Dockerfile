@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiando código da aplicação para o diretório de trabalho
 COPY . .
 
-# Expondo serviço na porta 8000
+# Expondo serviço na porta 5000
 EXPOSE 5000
 
 # Executando aplicação
